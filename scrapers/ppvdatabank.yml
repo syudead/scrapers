@@ -4,22 +4,39 @@ sceneByURL:
     url:
       - ppvdatabank.com/article/
     scraper: sceneScraper
+sceneByFragment:
+  action: scrapeXPath
+  queryURL: https://ppvdatabank.com/article/{filename}/
+  queryURLReplace:
+    filename:
+      - regex: .*?(\d{5,}).*
+        with: $1
+  scraper: sceneScraper
 
 xPathScrapers:
   sceneScraper:
     scene:
       Title:
-        selector: //title
+        selector: //title/text()
+      Details:
+        selector: //meta[@name='description']/@content
       Date:
-        selector: //ul[@class='meta']/li[1]
+        selector: //ul[@class='meta']/li[1]/text()
         postProcess:
           - replace:
               - regex: "販売日 : "
                 with: ""
-      Details:
-        selector: //meta[@name='description']/@content
+              - regex: (\d{4})/(\d{1,2})/(\d{1,2})
+                with: $1-$2-$3
+          - parseDate: 2006-1-2
       Image:
         selector: //div[@class='thumb']/img/@src
       Studio:
         Name:
-          selector: //ul[@class='meta']/li[4]/a
+          selector: //ul[@class='meta']/li[4]/a/text()
+      Code:
+        selector: //form/div/input[@name='aid']/@value
+        postProcess:
+          - replace:
+              - regex: (\d+)
+                with: FC2-PPV-$1
