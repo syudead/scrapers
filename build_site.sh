@@ -10,7 +10,8 @@ SCRAPERS_DIR="scrapers"
 
 mkdir -p "$OUTPUT_DIR/main"
 
-echo "# Auto-generated scraper index" > "$OUTPUT_DIR/main/index.yml"
+# Initialize empty index (no comment line)
+: > "$OUTPUT_DIR/main/index.yml"
 
 for scraper in "$SCRAPERS_DIR"/*.yml; do
     [ -f "$scraper" ] || continue
