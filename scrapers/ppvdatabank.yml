@@ -1,0 +1,25 @@
+name: PPVDatabank
+sceneByURL:
+  - action: scrapeXPath
+    url:
+      - ppvdatabank.com/article/
+    scraper: sceneScraper
+
+xPathScrapers:
+  sceneScraper:
+    scene:
+      Title:
+        selector: //title
+      Date:
+        selector: //ul[@class='meta']/li[1]
+        postProcess:
+          - replace:
+              - regex: "販売日 : "
+                with: ""
+      Details:
+        selector: //meta[@name='description']/@content
+      Image:
+        selector: //div[@class='thumb']/img/@src
+      Studio:
+        Name:
+          selector: //ul[@class='meta']/li[4]/a
