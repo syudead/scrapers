@@ -31,6 +31,10 @@ xPathScrapers:
           - parseDate: 2006-1-2
       Image:
         selector: //div[@class='thumb']/img/@src
+        postProcess:
+          - replace:
+              - regex: ^//
+                with: "https://"
       Studio:
         Name:
           selector: //ul[@class='meta']/li[4]/a/text()
