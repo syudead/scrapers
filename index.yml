@@ -1,0 +1,6 @@
+- id: ppvdatabank
+  name: PPVDatabank
+  version: "1.0.0"
+  date: 2025-02-04
+  path: ppvdatabank.zip
+  sha256: ""
