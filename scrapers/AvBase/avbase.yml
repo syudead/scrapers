@@ -1,0 +1,27 @@
+name: AvBase
+sceneByURL:
+  - action: script
+    url:
+      - avbase.net/works/
+    script:
+      - python
+      - avbase.py
+      - scene-by-url
+sceneByFragment:
+  action: script
+  script:
+    - python
+    - avbase.py
+    - scene-by-fragment
+sceneByName:
+  action: script
+  script:
+    - python
+    - avbase.py
+    - scene-by-name
+sceneByQueryFragment:
+  action: script
+  script:
+    - python
+    - avbase.py
+    - scene-by-query-fragment

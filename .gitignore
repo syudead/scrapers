@@ -2,3 +2,6 @@ _site/
 *.zip
 .DS_Store
 .claude/
+node_modules/
+package.json
+package-lock.json

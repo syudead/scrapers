@@ -4,3 +4,10 @@
   date: 2025-02-04 00:00:00
   path: ppvdatabank.zip
   sha256: ""
+
+- id: avbase
+  name: AvBase
+  version: "1.0.0"
+  date: 2026-02-04 00:00:00
+  path: AvBase.zip
+  sha256: ""

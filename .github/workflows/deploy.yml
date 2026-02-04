@@ -23,10 +23,22 @@ jobs:
       - name: Build
         run: |
           mkdir -p _site/main
-          cd scrapers && zip ../ppvdatabank.zip ppvdatabank.yml
-          mv ../ppvdatabank.zip ../_site/main/
-          SHA=$(sha256sum ../_site/main/ppvdatabank.zip | cut -d' ' -f1)
-          sed "s/sha256: \"\"/sha256: $SHA/" ../index.yml > ../_site/main/index.yml
+
+          # ppvdatabank (single yml file)
+          cd scrapers && zip ../ppvdatabank.zip ppvdatabank.yml && cd ..
+          mv ppvdatabank.zip _site/main/
+
+          # AvBase (directory with py + yml + requirements.txt)
+          cd scrapers/AvBase && zip -r ../../AvBase.zip . && cd ../..
+          mv AvBase.zip _site/main/
+
+          # Calculate SHA256 and update index.yml
+          SHA_PPV=$(sha256sum _site/main/ppvdatabank.zip | cut -d' ' -f1)
+          SHA_AVB=$(sha256sum _site/main/AvBase.zip | cut -d' ' -f1)
+
+          sed -e "0,/sha256: \"\"/s//sha256: $SHA_PPV/" \
+              -e "0,/sha256: \"\"/s//sha256: $SHA_AVB/" \
+              index.yml > _site/main/index.yml
 
       - uses: actions/upload-pages-artifact@v3
 
