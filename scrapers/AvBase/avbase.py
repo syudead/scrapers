@@ -111,13 +111,14 @@ def extract_code_from_data(data):
     # Try direct code field
     if data.get('code'):
         return data['code']
-    # Try title field (might contain code)
-    if data.get('title'):
-        # Extract code pattern from title (e.g., "SSIS-001" from filename)
-        match = re.search(r'([A-Z]{2,}[-_]?\d{3,})', data['title'].upper())
+
+    # Try URL field - extract code from avbase.net URL
+    url = data.get('url') or (data.get('urls', [None])[0] if data.get('urls') else None)
+    if url and 'avbase.net/works/' in url:
+        match = re.search(r'avbase\.net/works/([^/?]+)', url)
         if match:
             return match.group(1)
-        return data['title']
+
     # Try filename from files
     if data.get('files'):
         for f in data['files']:
@@ -130,6 +131,14 @@ def extract_code_from_data(data):
             # If no pattern match, use basename without extension as-is
             if basename:
                 return basename
+
+    # Try title field as last resort (more strict pattern)
+    if data.get('title'):
+        # Extract code pattern - require letter prefix (e.g., "SSIS-001", "NCY-266")
+        match = re.search(r'\b([A-Z]{2,}[-_]?\d{3,})\b', data['title'].upper())
+        if match:
+            return match.group(1)
+
     return None
 
 if __name__ == '__main__':
