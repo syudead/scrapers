@@ -91,8 +91,22 @@ def scrape_scene(url):
     for t in work.get('tags', []):
         all_tags.append({'name': t['name']})
 
-    # Collect external URLs from products
-    external_urls = [p.get('url') for p in products if p.get('url')]
+    # Collect external URLs from products (clean affiliate links)
+    external_urls = [url]  # Include avbase URL first
+    for p in products:
+        product_url = p.get('url', '')
+        if not product_url:
+            continue
+        # Clean getchu affiliate redirect
+        if 'order.getchu.com/r.php' in product_url:
+            match = re.search(r'url=([^&]+)', product_url)
+            if match:
+                from urllib.parse import unquote
+                product_url = unquote(match.group(1))
+        # Clean gyutto affiliate suffix
+        elif 'gyutto.com' in product_url:
+            product_url = re.sub(r'/af-\d+$', '', product_url)
+        external_urls.append(product_url)
 
     scene = {
         'title': work.get('title'),
