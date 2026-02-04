@@ -157,20 +157,39 @@ if __name__ == '__main__':
                 log("No code found in fragment data")
 
         elif mode == 'scene-by-name':
-            # User's search query - return array of results
+            # User's search query - return array of minimal search results
+            # Stash will call sceneByURL with selected URL to get full details
             query = data.get('name', '')
             if query:
                 scene = scrape_by_fragment(query)
-                result = [scene] if scene else []
+                if scene:
+                    # Return minimal search result format
+                    result = [{
+                        'title': scene.get('title'),
+                        'url': scene.get('url'),
+                        'date': scene.get('date'),
+                        'image': scene.get('image')
+                    }]
+                else:
+                    result = []
             else:
                 log("No search query")
                 result = []
 
         elif mode == 'scene-by-query-fragment':
+            # Return array of minimal search results for auto-scrape
             code = extract_code_from_data(data)
             if code:
                 scene = scrape_by_fragment(code)
-                result = [scene] if scene else []
+                if scene:
+                    result = [{
+                        'title': scene.get('title'),
+                        'url': scene.get('url'),
+                        'date': scene.get('date'),
+                        'image': scene.get('image')
+                    }]
+                else:
+                    result = []
             else:
                 log("No code found in query fragment")
                 result = []
