@@ -84,16 +84,27 @@ def scrape_scene(url):
     products = work.get('products', [])
     primary = products[0] if products else {}
 
+    # Merge genres and tags
+    all_tags = []
+    for g in work.get('genres', []):
+        all_tags.append({'name': g['name']})
+    for t in work.get('tags', []):
+        all_tags.append({'name': t['name']})
+
+    # Collect external URLs from products
+    external_urls = [p.get('url') for p in products if p.get('url')]
+
     scene = {
         'title': work.get('title'),
         'code': work.get('work_id'),
         'details': work.get('note') or None,
         'date': parse_date(work.get('min_date')),
         'url': url,
+        'urls': external_urls if external_urls else None,
         'image': primary.get('image_url'),
         'studio': {'name': primary.get('maker', {}).get('name')} if primary.get('maker', {}).get('name') else None,
         'performers': [{'name': c['actor']['name']} for c in work.get('casts', []) if c.get('actor', {}).get('name')],
-        'tags': [{'name': g['name']} for g in work.get('genres', [])]
+        'tags': all_tags
     }
 
     return clean_dict(scene)
