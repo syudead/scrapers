@@ -189,22 +189,13 @@ if __name__ == '__main__':
                 result = []
 
         elif mode == 'scene-by-query-fragment':
-            # Return array of minimal search results for auto-scrape
+            # Return single scene object (same as scene-by-fragment)
             code = extract_code_from_data(data)
+            log(f"Extracted code: {code}")
             if code:
-                scene = scrape_by_fragment(code)
-                if scene:
-                    result = [{
-                        'title': scene.get('title'),
-                        'url': scene.get('url'),
-                        'date': scene.get('date'),
-                        'image': scene.get('image')
-                    }]
-                else:
-                    result = []
+                result = scrape_by_fragment(code)
             else:
                 log("No code found in query fragment")
-                result = []
 
         else:
             # CLI test mode
