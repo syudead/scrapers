@@ -150,7 +150,10 @@ if __name__ == '__main__':
                 log("No URL in input")
 
         elif mode == 'scene-by-fragment':
+            log(f"Input data keys: {list(data.keys())}")
+            log(f"Input data: {json.dumps(data, ensure_ascii=False)[:500]}")
             code = extract_code_from_data(data)
+            log(f"Extracted code: {code}")
             if code:
                 result = scrape_by_fragment(code)
             else:
