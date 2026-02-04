@@ -142,6 +142,8 @@ if __name__ == '__main__':
 
         # Get mode from command argument
         mode = sys.argv[1] if len(sys.argv) > 1 else None
+        log(f"Mode: {mode}")
+        log(f"Input: {json.dumps(data, ensure_ascii=False)[:500]}")
 
         if mode == 'scene-by-url':
             if 'url' in data:
@@ -150,8 +152,6 @@ if __name__ == '__main__':
                 log("No URL in input")
 
         elif mode == 'scene-by-fragment':
-            log(f"Input data keys: {list(data.keys())}")
-            log(f"Input data: {json.dumps(data, ensure_ascii=False)[:500]}")
             code = extract_code_from_data(data)
             log(f"Extracted code: {code}")
             if code:
