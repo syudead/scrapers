@@ -11,3 +11,10 @@
   date: 2026-02-04 00:00:00
   path: AvBase.zip
   sha256: ""
+
+- id: dlgetchu
+  name: DLGetchu
+  version: "1.0.0"
+  date: 2026-02-17 00:00:00
+  path: DLGetchu.zip
+  sha256: ""

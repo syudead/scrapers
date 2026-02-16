@@ -1,0 +1,27 @@
+name: DLGetchu
+sceneByURL:
+  - action: script
+    url:
+      - dl.getchu.com/i/item
+    script:
+      - python
+      - dlgetchu.py
+      - scene-by-url
+sceneByFragment:
+  action: script
+  script:
+    - python
+    - dlgetchu.py
+    - scene-by-fragment
+sceneByName:
+  action: script
+  script:
+    - python
+    - dlgetchu.py
+    - scene-by-name
+sceneByQueryFragment:
+  action: script
+  script:
+    - python
+    - dlgetchu.py
+    - scene-by-query-fragment
