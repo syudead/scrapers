@@ -32,12 +32,18 @@ jobs:
           cd scrapers/AvBase && zip -r ../../AvBase.zip . && cd ../..
           mv AvBase.zip _site/main/
 
+          # DLGetchu (directory with py + yml + requirements.txt)
+          cd scrapers/DLGetchu && zip -r ../../DLGetchu.zip . && cd ../..
+          mv DLGetchu.zip _site/main/
+
           # Calculate SHA256 and update index.yml
           SHA_PPV=$(sha256sum _site/main/ppvdatabank.zip | cut -d' ' -f1)
           SHA_AVB=$(sha256sum _site/main/AvBase.zip | cut -d' ' -f1)
+          SHA_DLG=$(sha256sum _site/main/DLGetchu.zip | cut -d' ' -f1)
 
           sed -e "0,/sha256: \"\"/s//sha256: $SHA_PPV/" \
               -e "0,/sha256: \"\"/s//sha256: $SHA_AVB/" \
+              -e "0,/sha256: \"\"/s//sha256: $SHA_DLG/" \
               index.yml > _site/main/index.yml
 
       - uses: actions/upload-pages-artifact@v3
