@@ -7,8 +7,8 @@
 
 - id: avbase
   name: AvBase
-  version: "1.0.7"
-  date: 2026-02-04 00:00:00
+  version: "1.0.8"
+  date: 2026-02-17 00:00:00
   path: AvBase.zip
   sha256: ""
 

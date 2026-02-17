@@ -131,6 +131,45 @@ def scrape_by_fragment(fragment):
     url = f"https://www.avbase.net/works/{code}"
     return scrape_scene(url)
 
+def search_works(query):
+    """Search avbase and return list of results"""
+    from urllib.parse import quote
+    search_url = f"https://www.avbase.net/works?q={quote(query)}"
+    log(f"Searching: {search_url}")
+
+    html = fetch_page(search_url)
+    if not html:
+        return []
+
+    next_data = extract_next_data(html)
+    if not next_data:
+        log("Failed to extract __NEXT_DATA__ from search")
+        return []
+
+    works = next_data.get('props', {}).get('pageProps', {}).get('works', [])
+    if not works:
+        log("No search results found")
+        return []
+
+    results = []
+    for work in works:
+        work_id = work.get('work_id')
+        if not work_id:
+            continue
+
+        products = work.get('products', [])
+        primary = products[0] if products else {}
+
+        results.append({
+            'title': work.get('title'),
+            'code': work_id,
+            'url': f"https://www.avbase.net/works/{work_id}",
+            'date': parse_date(work.get('min_date')),
+            'image': primary.get('image_url')
+        })
+
+    return results
+
 def extract_code_from_data(data):
     """Extract code from various input fields"""
     # Try direct code field
@@ -198,17 +237,7 @@ if __name__ == '__main__':
             # Stash will call sceneByURL with selected URL to get full details
             query = data.get('name', '')
             if query:
-                scene = scrape_by_fragment(query)
-                if scene:
-                    # Return minimal search result format
-                    result = [{
-                        'title': scene.get('title'),
-                        'url': scene.get('url'),
-                        'date': scene.get('date'),
-                        'image': scene.get('image')
-                    }]
-                else:
-                    result = []
+                result = search_works(query)
             else:
                 log("No search query")
                 result = []
